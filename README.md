@@ -1,12 +1,15 @@
+# EKS Cluster for osm-sandbox
 
 
+## Get VPC from aws 
 
-
+```sh
 aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-0463def14f555a7ed" --query "Subnets[*].{ID:SubnetId,CIDR:CidrBlock,AZ:AvailabilityZone,Public:MapPublicIpOnLaunch}"
-
-
-
 ```
+
+- Results
+
+```json
   {
         "ID": "subnet-0f8836c96b7d3305f",
         "CIDR": "172.31.0.0/20",
@@ -44,11 +47,3 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-0463def14f555a7ed" --
         "Public": true
     },
 ```
-
-
-```sh
-aws eks update-kubeconfig --region us-east-1 --name geocompas-k8s-production
-kubectl cluster-info
-```
-
-t3_medium_ondemand

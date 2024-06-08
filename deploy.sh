@@ -13,13 +13,13 @@ function createNodeGroups {
             export FAMILY=$(echo $instance_json | jq -r ".instances[$i].family")
             export SPOT_PRICE=$(echo $instance_json | jq -r ".instances[$i].spot_price")
             export NODEGROUP_TYPE=$(echo $instance_json | jq -r ".instances[$i].nodegroup_type")
-            export DESIRED_CAPACITY=$(echo $instance_json | jq -r ".instances[$i].desiredCapacity")
-
+            export DESIRED_CAPACITY_ONDEMAND=$(echo $instance_json | jq -r ".instances[$i].desiredCapacity_ondemand")
+            export DESIRED_CAPACITY_SPOT=$(echo $instance_json | jq -r ".instances[$i].desiredCapacity_spot")
             echo "FAMILY: $FAMILY"
             echo "SPOT_PRICE: $SPOT_PRICE"
             echo "NODEGROUP_TYPE: $NODEGROUP_TYPE"
-            echo "DESIRED_CAPACITY: $DESIRED_CAPACITY"
-
+            echo "DESIRED_CAPACITY_ONDEMAND: $DESIRED_CAPACITY_ONDEMAND"
+            echo "DESIRED_CAPACITY_SPOT: $DESIRED_CAPACITY_SPOT"
             # Create nodeGroups for the cluster
             # envsubst <nodeGroups.yaml > tmp/nodeGroups.yaml
             if [ "$ACTION" == "create" ]; then

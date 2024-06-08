@@ -7,7 +7,7 @@ nodeGroups:
   - name: ${NODEGROUP_TYPE}-ondemand
     instanceType: ${FAMILY}
     availabilityZones: ["${AWS_AVAILABILITY_ZONE}"]
-    desiredCapacity: ${DESIRED_CAPACITY}
+    desiredCapacity: ${DESIRED_CAPACITY_ONDEMAND}
     minSize: 0
     maxSize: 10
     volumeSize: 80
@@ -26,7 +26,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/label/nodegroup_type: "${NODEGROUP_TYPE}-ondemand"
       environment: ${ENVIRONMENT}
   - name: ${NODEGROUP_TYPE}-spot
-    desiredCapacity: ${DESIRED_CAPACITY}
+    desiredCapacity: ${DESIRED_CAPACITY_SPOT}
     minSize: 0
     maxSize: 10
     instancesDistribution:
