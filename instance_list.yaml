@@ -1,13 +1,13 @@
 instances:
 - family: t3.micro
   spot_price: 0.0043
-  nodegroup_type: t3_micro
-  desiredCapacity: 0
-- family: t3.medium
-  spot_price: 0.0186
-  nodegroup_type: t3_medium
+  nodegroup_type: t3-micro
   desiredCapacity: 1
-- family: t3.large
-  spot_price: 0.0421
-  nodegroup_type: t3_large
-  desiredCapacity: 0
+# - family: t3.medium
+#   spot_price: 0.0186
+#   nodegroup_type: t3_medium
+#   desiredCapacity: 1
+# - family: t3.large
+#   spot_price: 0.0421
+#   nodegroup_type: t3_large
+#   desiredCapacity: 0

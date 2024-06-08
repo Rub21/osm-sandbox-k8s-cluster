@@ -4,63 +4,62 @@ metadata:
   name: ${CLUSTER_NAME}
   region: ${AWS_REGION}
 nodeGroups:
-- name: ${NODEGROUP_TYPE}_ondemand
-  instanceType: ${FAMILY}
-  availabilityZones: ["${AWS_AVAILABILITY_ZONE}"]
-  desiredCapacity: ${DESIRED_CAPACITY}
-  minSize: 0
-  maxSize: 10
-  volumeSize: 80
-  volumeType: gp2
-  labels:
-    nodegroup_type: ${NODEGROUP_TYPE}_ondemand
-  iam:
-    attachPolicyARNs:
-    - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-    - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
-    - arn:aws:iam::aws:policy/AmazonS3FullAccess
-    - ${AWS_POLICY_ARN}
-    withAddonPolicies:
-      autoScaler: true
-      cloudWatch: true
-  tags:
-    k8s.io/cluster-autoscaler/node-template/label/nodegroup_type: "${NODEGROUP_TYPE}_ondemand"
-    enviroment: ${ENVIRONMENT}
-- name: ${NODEGROUP_TYPE}_spot
-  desiredCapacity: ${DESIRED_CAPACITY}
-  minSize: 0
-  maxSize: 10
-  instancesDistribution:
-    maxPrice: ${SPOT_PRICE}
-    instanceTypes: ["${FAMILY}"]
-    onDemandBaseCapacity: 0
-    onDemandPercentageAboveBaseCapacity: 0
-    spotAllocationStrategy: capacity-optimized
-  labels:
-    lifecycle: Ec2Spot
-    aws.amazon.com/spot: "true"
-    cpu-count: "0"
-    nodegroup_type: ${NODEGROUP_TYPE}_spot
-  availabilityZones: ["${AWS_AVAILABILITY_ZONE}"]
-  taints:
-  - key: spotInstance
-    value: "true"
-    effect: PreferNoSchedule
-  tags:
-    k8s.io/cluster-autoscaler/node-template/label/lifecycle: Ec2Spot
-    k8s.io/cluster-autoscaler/node-template/label/aws.amazon.com/spot: "true"
-    k8s.io/cluster-autoscaler/node-template/label/cpu-count: "0"
-    k8s.io/cluster-autoscaler/node-template/taint/spotInstance: "true:PreferNoSchedule"
-    k8s.io/cluster-autoscaler/enabled: "true"
-    k8s.io/cluster-autoscaler/${CLUSTER_NAME}: "owned"
-    k8s.io/cluster-autoscaler/node-template/label/nodegroup_type: "${NODEGROUP_TYPE}_spot"
-  iam:
-    attachPolicyARNs:
-    - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-    - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
-    - arn:aws:iam::aws:policy/AmazonS3FullAccess
-    - arn:aws:iam::aws:policy/CloudWatchFullAccess
-    - ${AWS_POLICY_ARN}
-    withAddonPolicies:
-      autoScaler: true
-      cloudWatch: true
+  - name: ${NODEGROUP_TYPE}-ondemand
+    instanceType: ${FAMILY}
+    availabilityZones: ["${AWS_AVAILABILITY_ZONE}"]
+    desiredCapacity: ${DESIRED_CAPACITY}
+    minSize: 0
+    maxSize: 10
+    volumeSize: 80
+    volumeType: gp2
+    labels:
+      nodegroup_type: ${NODEGROUP_TYPE}-ondemand
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - ${AWS_POLICY_ARN}
+      withAddonPolicies:
+        autoScaler: true
+    tags:
+      k8s.io/cluster-autoscaler/node-template/label/nodegroup_type: "${NODEGROUP_TYPE}-ondemand"
+      environment: ${ENVIRONMENT}
+  - name: ${NODEGROUP_TYPE}-spot
+    desiredCapacity: ${DESIRED_CAPACITY}
+    minSize: 0
+    maxSize: 10
+    instancesDistribution:
+      maxPrice: ${SPOT_PRICE}
+      instanceTypes: ["${FAMILY}"]
+      onDemandBaseCapacity: 0
+      onDemandPercentageAboveBaseCapacity: 0
+      spotAllocationStrategy: capacity-optimized
+    labels:
+      lifecycle: Ec2Spot
+      aws.amazon.com/spot: "true"
+      cpu-count: "0"
+      nodegroup_type: ${NODEGROUP_TYPE}-spot
+    availabilityZones: ["${AWS_AVAILABILITY_ZONE}"]
+    taints:
+      - key: spotInstance
+        value: "true"
+        effect: PreferNoSchedule
+    tags:
+      k8s.io/cluster-autoscaler/node-template/label/lifecycle: Ec2Spot
+      k8s.io/cluster-autoscaler/node-template/label/aws.amazon.com/spot: "true"
+      k8s.io/cluster-autoscaler/node-template/label/cpu-count: "0"
+      k8s.io/cluster-autoscaler/node-template/taint/spotInstance: "true:PreferNoSchedule"
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/${CLUSTER_NAME}: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/nodegroup_type: "${NODEGROUP_TYPE}-spot"
+      environment: ${ENVIRONMENT}
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/CloudWatchFullAccess
+        - ${AWS_POLICY_ARN}
+      withAddonPolicies:
+        autoScaler: true
