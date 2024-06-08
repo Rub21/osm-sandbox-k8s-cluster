@@ -145,7 +145,7 @@ spec:
           type: RuntimeDefault
       serviceAccountName: cluster-autoscaler
       nodeSelector:
-        nodegroup_type: admin
+        nodegroup_type: t3_medium_ondemand
       containers:
       - image: registry.k8s.io/autoscaling/cluster-autoscaler:v1.26.2
         name: cluster-autoscaler
@@ -162,9 +162,9 @@ spec:
         - --stderrthreshold=info
         - --cloud-provider=aws
         - --skip-nodes-with-local-storage=false
-        - --scale-down-unneeded-time=3m
+        - --scale-down-unneeded-time=30s
         - --expander=most-pods
-        - --scale-down-unready-time=2m
+        - --scale-down-unready-time=30s
         - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/${CLUSTER_NAME}
         volumeMounts:
         - name: ssl-certs
