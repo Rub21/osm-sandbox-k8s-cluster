@@ -47,3 +47,10 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-0463def14f555a7ed" --
         "Public": true
     },
 ```
+
+
+### Install aws-auth
+
+```sh
+kubectl apply -f aws-auth-deploy.yaml
+```

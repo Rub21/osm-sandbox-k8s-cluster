@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  mapUsers: |
+    - groups:
+      - system:masters
+      userarn: arn:aws:iam::381492111575:user/osm-sandbox-deploy
+      username: osm-sandbox-deploy
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system

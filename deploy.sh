@@ -54,8 +54,8 @@ function createCluster {
         # kubectl get pods -n kube-system | grep metrics-server
 
         ### Install autoscaler
-        envsubst <asg-autodiscover.yaml | kubectl apply -f -
-        kubectl get pods --namespace=kube-system | grep autoscaler
+        # envsubst <asg-autodiscover.yaml | kubectl apply -f -
+        # kubectl get pods --namespace=kube-system | grep autoscaler
 
         ### Instaling ingress-nginx and cert-manager
         # helm repo add jetstack https://charts.jetstack.io
@@ -67,9 +67,9 @@ function createCluster {
         # --create-namespace \
         # --version v1.15.0 \
         # --set crds.enabled=true
-        # helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
-        # kubectl get pods -n cert-manager
-        # kubectl get pods -n ingress-nginx
+        helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
+        kubectl get pods -n cert-manager
+        kubectl get pods -n ingress-nginx
 
         ### Update aws-auth
         # kubectl get configmap aws-auth -n kube-system -o yaml >aws-auth.yaml
