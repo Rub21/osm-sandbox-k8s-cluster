@@ -1,0 +1,28 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: ${CLUSTER_NAME}
+  region: ${AWS_REGION}
+nodeGroups:
+  - name: dashboard-node
+    instanceType: "t3.medium"
+    availabilityZones: ["${AWS_AVAILABILITY_ZONE}"]
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 10
+    volumeSize: 100
+    volumeType: gp2
+    labels:
+      nodegroup_type: dashboard-node
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - ${ASG_AWS_POLICY_ARN}
+        - ${EKS_AWS_POLICY_ARN}
+      withAddonPolicies:
+        autoScaler: true
+    tags:
+      k8s.io/cluster-autoscaler/node-template/label/nodegroup_type: "dashboard-node"
+      environment: ${ENVIRONMENT}
