@@ -62,9 +62,11 @@ function createCluster {
         # kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
         # kubectl get pods -n kube-system | grep metrics-server
 
-        ### Install autoscaler
-        # envsubst <asg-autodiscover.yaml | kubectl apply -f -
-        # kubectl get pods --namespace=kube-system | grep autoscaler
+        ###############################
+        ## Install autoscaler
+        ###############################
+        envsubst <asg-autodiscover.yaml | kubectl apply -f -
+        kubectl get pods --namespace=kube-system | grep autoscaler
 
         ### Instaling ingress-nginx and cert-manager
         # helm repo add jetstack https://charts.jetstack.io
@@ -83,7 +85,7 @@ function createCluster {
         ###############################
         ## Create service account in order pods  has access to interact with the cluster using helm
         ###############################
-        kubectl apply -f helm-service-account.yaml
+        # kubectl apply -f helm-service-account.yaml
 
 
         ### Update aws-auth
