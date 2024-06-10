@@ -20,7 +20,7 @@ nodeGroups:
         - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
         - ${ASG_AWS_POLICY_ARN}
-        - ${EKS_AWS_POLICY_ARN}
+        # - ${EKS_AWS_POLICY_ARN}
       withAddonPolicies:
         autoScaler: true
     tags:

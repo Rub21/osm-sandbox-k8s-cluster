@@ -7,9 +7,56 @@
                 "eks:DescribeCluster",
                 "eks:ListClusters",
                 "eks:DescribeNodegroup",
-                "eks:ListNodegroups"
+                "eks:ListNodegroups",
+                "eks:DescribeFargateProfile",
+                "eks:ListFargateProfiles",
+                "eks:UpdateClusterVersion",
+                "eks:UpdateClusterConfig"
             ],
             "Resource": "${CLUSTER_ARN}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:DescribeRegions",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeRouteTables",
+                "ec2:DescribeVpcs"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateServiceAccount",
+                "iam:DeleteServiceAccount",
+                "iam:GetRole",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:PassRole"
+            ],
+            "Resource": "*"
         }
     ]
 }

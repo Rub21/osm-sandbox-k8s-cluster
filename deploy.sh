@@ -45,7 +45,6 @@ function createCluster {
         # envsubst <policy.eks.template.json > tmp/eks.policy.json
         # aws iam create-policy --policy-name ${EKS_AWS_POLICY_NAME} --policy-document file://tmp/eks.policy.json
 
-
         # # Get cluster credentials
         # aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}
         # kubectl cluster-info
@@ -53,7 +52,7 @@ function createCluster {
         ###############################
         ## Install dashboard node
         ###############################
-        envsubst <nodeGroups.dashboard.yaml | eksctl create nodegroup -f -
+        # envsubst <nodeGroups.dashboard.yaml | eksctl create nodegroup -f -
 
         # # Install eb-csi addons
         # kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
@@ -81,6 +80,12 @@ function createCluster {
         # kubectl get pods -n cert-manager
         # kubectl get pods -n ingress-nginx
 
+        ###############################
+        ## Create service account in order pods  has access to interact with the cluster using helm
+        ###############################
+        kubectl apply -f helm-service-account.yaml
+
+
         ### Update aws-auth
         # kubectl get configmap aws-auth -n kube-system -o yaml >aws-auth.yaml
         # echo "Update manually aws-auth.yaml, use as example mapUsers.yaml"
@@ -92,8 +97,8 @@ function createCluster {
 function deleteCluster {
     read -p "Are you sure you want to DELETE the CLUSTER ${CLUSTER_NAME} in REGION ${AWS_REGION}? (y/n): " confirm
     if [[ $confirm == [Yy] ]]; then
-        eksctl delete cluster --region=${AWS_REGION} --name=${CLUSTER_NAME}
-        aws iam delete-policy --policy-arn ${ASG_AWS_POLICY_ARN}
+        # eksctl delete cluster --region=${AWS_REGION} --name=${CLUSTER_NAME}
+        # aws iam delete-policy --policy-arn ${ASG_AWS_POLICY_ARN}
         aws iam delete-policy --policy-arn ${EKS_AWS_POLICY_ARN}
 
     fi
