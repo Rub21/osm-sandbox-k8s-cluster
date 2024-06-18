@@ -34,33 +34,45 @@ function createNodeGroups {
 function createCluster {
     read -p "Are you sure you want to CREATE a CLUSTER ${CLUSTER_NAME} in REGION ${AWS_REGION}? (y/n): " confirm
     if [[ $confirm == [Yy] ]]; then
-        # Create cluster
-        # envsubst <cluster.yaml | eksctl create cluster -f -
+        ###############################
+        ## Create cluster
+        ###############################
+        envsubst <cluster.yaml | eksctl create cluster -f -
 
-        # Create ASG policy
-        # envsubst <policy.asg.template.json > tmp/asg.policy.json
-        # aws iam create-policy --policy-name ${ASG_AWS_POLICY_NAME} --policy-document file://tmp/asg.policy.json
+        ###############################
+        ## Create ASG policy
+        ###############################
+        envsubst <policy.asg.template.json > tmp/asg.policy.json
+        aws iam create-policy --policy-name ${ASG_AWS_POLICY_NAME} --policy-document file://tmp/asg.policy.json
 
-        # Create EKS policy access
-        # envsubst <policy.eks.template.json > tmp/eks.policy.json
-        # aws iam create-policy --policy-name ${EKS_AWS_POLICY_NAME} --policy-document file://tmp/eks.policy.json
+        ###############################
+        ## Create EKS policy access
+        ###############################
+        envsubst <policy.eks.template.json > tmp/eks.policy.json
+        aws iam create-policy --policy-name ${EKS_AWS_POLICY_NAME} --policy-document file://tmp/eks.policy.json
 
-        # # Get cluster credentials
-        # aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}
-        # kubectl cluster-info
+        ###############################
+        ## Get cluster credentials
+        ###############################
+        aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}
+        kubectl cluster-info
 
         ###############################
         ## Install dashboard node
         ###############################
-        # envsubst <nodeGroups.dashboard.yaml | eksctl create nodegroup -f -
+        envsubst <nodeGroups.dashboard.yaml | eksctl create nodegroup -f -
 
-        # # Install eb-csi addons
-        # kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
-        # kubectl get pods -n kube-system | grep ebs-csi
+        ###############################
+        ## Install eb-csi addons
+        ###############################
+        kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
+        kubectl get pods -n kube-system | grep ebs-csi
 
-        ### Metricts server
-        # kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-        # kubectl get pods -n kube-system | grep metrics-server
+        ###############################
+        ## Metricts server
+        ###############################
+        kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+        kubectl get pods -n kube-system | grep metrics-server
 
         ###############################
         ## Install autoscaler
@@ -68,30 +80,31 @@ function createCluster {
         envsubst <asg-autodiscover.yaml | kubectl apply -f -
         kubectl get pods --namespace=kube-system | grep autoscaler
 
-        ### Instaling ingress-nginx and cert-manager
-        # helm repo add jetstack https://charts.jetstack.io
-        # helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-        # helm repo update
-        # helm install \
-        # cert-manager jetstack/cert-manager \
-        # --namespace cert-manager \
-        # --create-namespace \
-        # --version v1.15.0 \
-        # --set crds.enabled=true
-        # helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
-        # kubectl get pods -n cert-manager
-        # kubectl get pods -n ingress-nginx
-
         ###############################
-        ## Create service account in order pods  has access to interact with the cluster using helm
+        ## Instaling ingress-nginx and cert-manager
         ###############################
-        # kubectl apply -f helm-service-account.yaml
+        helm repo add jetstack https://charts.jetstack.io
+        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+        helm repo update
+        helm install \
+        cert-manager jetstack/cert-manager \
+        --namespace cert-manager \
+        --create-namespace \
+        --version v1.15.0 \
+        --set crds.enabled=true
+        helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
+        kubectl get pods -n cert-manager
+        kubectl get pods -n ingress-nginx
 
+        ##############################
+        # Create service account in order pods  has access to interact with the cluster using helm
+        ##############################
+        kubectl apply -f helm-service-account.yaml
 
-        ### Update aws-auth
-        # kubectl get configmap aws-auth -n kube-system -o yaml >aws-auth.yaml
-        # echo "Update manually aws-auth.yaml, use as example mapUsers.yaml"
-        # echo "kubectl apply -f aws-auth.yaml"
+        ## Update aws-auth
+        kubectl get configmap aws-auth -n kube-system -o yaml >aws-auth.yaml
+        echo "Update manually aws-auth.yaml, use as example mapUsers.yaml"
+        echo "kubectl apply -f aws-auth.yaml"
     fi
 
 }
