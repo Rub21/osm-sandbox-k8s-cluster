@@ -145,7 +145,7 @@ spec:
           type: RuntimeDefault
       serviceAccountName: cluster-autoscaler
       nodeSelector:
-        nodegroup_type: t3-medium-ondemand
+        nodegroup_type: dashboard-node
       containers:
       - image: registry.k8s.io/autoscaling/cluster-autoscaler:v1.26.2
         name: cluster-autoscaler
