@@ -105,6 +105,9 @@ function createCluster {
         kubectl get configmap aws-auth -n kube-system -o yaml >aws-auth.yaml
         echo "Update manually aws-auth.yaml, use as example mapUsers.yaml"
         echo "kubectl apply -f aws-auth.yaml"
+
+
+        kubectl apply -f letsencrypt-issuer.yaml
     fi
 
 }
