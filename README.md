@@ -1,7 +1,8 @@
 # EKS Cluster for osm-sandbox
 
+# Configure manually the existing VPC
 
-## Get VPC from aws 
+### Get VPC ids from aws 
 
 ```sh
 aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-0463def14f555a7ed" --query "Subnets[*].{ID:SubnetId,CIDR:CidrBlock,AZ:AvailabilityZone,Public:MapPublicIpOnLaunch}"
@@ -47,10 +48,26 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-0463def14f555a7ed" --
         "Public": true
     },
 ```
+Update the values in cluster.yaml.
 
 
-### Install aws-auth
+# Create venv 
 
 ```sh
-kubectl apply -f aws-auth-deploy.yaml
+python3 -m venv eks_cluster
+source eks_cluster/bin/activate
+pip install pyyaml
 ```
+
+## Deploy  cluster
+
+```sh
+./deploy.sh staging create_cluster
+```
+
+## Deploy nodes
+
+```sh
+./deploy.sh staging create_nodes
+```
+

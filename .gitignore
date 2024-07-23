@@ -2,3 +2,4 @@
 aws-auth.yaml
 policy.json
 tmp/
+eks_cluster/

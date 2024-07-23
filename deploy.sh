@@ -101,12 +101,16 @@ function createCluster {
         ##############################
         kubectl apply -f helm-service-account.yaml
 
-        ## Update aws-auth
-        kubectl get configmap aws-auth -n kube-system -o yaml >aws-auth.yaml
-        echo "Update manually aws-auth.yaml, use as example mapUsers.yaml"
-        echo "kubectl apply -f aws-auth.yaml"
+        ##############################
+        # Update aws-auth
+        ##############################
+        # kubectl get configmap aws-auth -n kube-system -o yaml >aws-auth.yaml
+        # echo "Update manually aws-auth.yaml, use as example mapUsers.yaml"
+        # echo "kubectl apply -f aws-auth.yaml"
 
-
+        ##############################
+        # Create letsencrypt-issuer just once
+        ##############################
         kubectl apply -f letsencrypt-issuer.yaml
     fi
 
